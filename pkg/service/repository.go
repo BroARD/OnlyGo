@@ -7,7 +7,7 @@ import (
 type QuoteRepository interface {
 	CreateQuote(quote Quote) error
 	GetAllQuotes() ([]Quote, error)
-	GetQuoteByID(quote_id string) (Quote, error)
+	GetRandomQuote() (Quote, error)
 }
 
 type quoteRepository struct {
@@ -29,8 +29,8 @@ func (r *quoteRepository) GetAllQuotes() ([]Quote, error) {
 	return quotes, err
 }
 
-func (r *quoteRepository) GetQuoteByID(quote_id string) (Quote, error) {
+func (r *quoteRepository) GetRandomQuote() (Quote, error) {
 	var quote Quote
-	err := r.db.First(&quote, "id = ?", quote_id).Error
+	err := r.db.Order("RANDOM()").Limit(1).Find(&quote).Error
 	return quote, err
 }
