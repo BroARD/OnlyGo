@@ -1,7 +1,7 @@
 package service
 
 type Quote struct {
-	ID string `json:"id"`
+	ID uint `json:"id" gorm:"primaryKey;autoIncrement"`
 	Author string `json:"author"`
 	Quote string `json:"quote"`
 }
