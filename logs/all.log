@@ -1,0 +1,4 @@
+time="2025-06-02T16:05:44+07:00" level=info msg="Start db" func="main.main()" file="main.go:18"
+time="2025-06-02T16:05:44+07:00" level=info msg="registring a quote repository" func="main.main()" file="main.go:24"
+time="2025-06-02T16:05:44+07:00" level=info msg="registring a quote service" func="main.main()" file="main.go:26"
+time="2025-06-02T16:05:44+07:00" level=info msg="registring a quote handlers" func="main.main()" file="main.go:28"
