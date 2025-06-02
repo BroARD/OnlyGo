@@ -1,7 +1,7 @@
 package db
 
 import (
-	"OnlyGo/pkg/service"
+	"OnlyGo/pkg/quote"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -18,7 +18,7 @@ func InitDB() (*gorm.DB, error) {
 	if err != nil {
 		log.Fatalf("FATAL: Ошибка подключения к БД: %v", err)
 	}
-	if err := db.AutoMigrate(&service.Quote{}); err != nil {
+	if err := db.AutoMigrate(&quote.Quote{}); err != nil {
 		log.Fatalf("FATAL: Ошибка миграции: %v", err)
 	}
 
