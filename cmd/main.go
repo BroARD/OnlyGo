@@ -1,6 +1,7 @@
 package main
 
 import (
+	"OnlyGo/logging"
 	"OnlyGo/pkg/db"
 	"OnlyGo/pkg/quote"
 	"log"
@@ -12,13 +13,19 @@ import (
 )
 
 func main() {
+	logger := logging.GetLogger()
+
+	logger.Info("Start db")
 	database, err := db.InitDB()
 	if err != nil {
-		log.Fatal("Could not connect to DB")
+		logger.Info("Could not start a DB")
 	}
 
+	logger.Info("registring a quote repository")
 	quoteRepository := quote.NewRepository(database)
+	logger.Info("registring a quote service")
 	quoteService := quote.NewService(quoteRepository)
+	logger.Info("registring a quote handlers")
 	quoteHandler := quote.NewHandler(quoteService)
 
 	r := mux.NewRouter()
