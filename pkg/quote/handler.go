@@ -1,6 +1,7 @@
 package quote
 
 import (
+	"OnlyGo/logging"
 	"OnlyGo/pkg/handlers"
 	"encoding/json"
 	"net/http"
@@ -10,11 +11,12 @@ import (
 )
 
 type quoteHandler struct {
+	logger logging.Logger
 	service QuoteService
 }
 
-func NewHandler(serv QuoteService) handlers.Handler {
-	return &quoteHandler{service: serv}
+func NewHandler(serv QuoteService, logger logging.Logger) handlers.Handler {
+	return &quoteHandler{service: serv, logger: logger}
 }
 
 func (h *quoteHandler) Register(router *mux.Router) {
@@ -32,7 +34,8 @@ func (h *quoteHandler) CreateQuote(w http.ResponseWriter, router *http.Request) 
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
-
+	
+	h.logger.Info("Create new quote")
 	err = h.service.CreateQuote(quote)
 	if err != nil {
 		http.Error(w, "Bad request", http.StatusInternalServerError)
@@ -44,6 +47,8 @@ func (h *quoteHandler) CreateQuote(w http.ResponseWriter, router *http.Request) 
 
 func (h *quoteHandler) GetAllQuotes(w http.ResponseWriter, router *http.Request) {
 	author := router.URL.Query().Get("author")
+	
+	h.logger.Info("Get quotes from DB")
 	quotes, err := h.service.GetAllQuotes(author)
 	if err != nil {
 		http.Error(w, "Could not get quotes", http.StatusInternalServerError)

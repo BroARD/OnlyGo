@@ -26,7 +26,7 @@ func main() {
 	logger.Info("registring a quote service")
 	quoteService := quote.NewService(quoteRepository)
 	logger.Info("registring a quote handlers")
-	quoteHandler := quote.NewHandler(quoteService)
+	quoteHandler := quote.NewHandler(quoteService, logger)
 
 	r := mux.NewRouter()
 	quoteHandler.Register(r)
