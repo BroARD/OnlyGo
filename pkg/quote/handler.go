@@ -11,11 +11,11 @@ import (
 )
 
 type quoteHandler struct {
-	logger logging.Logger
+	logger *logging.Logger
 	service QuoteService
 }
 
-func NewHandler(serv QuoteService, logger logging.Logger) handlers.Handler {
+func NewHandler(serv QuoteService, logger *logging.Logger) handlers.Handler {
 	return &quoteHandler{service: serv, logger: logger}
 }
 
