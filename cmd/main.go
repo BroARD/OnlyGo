@@ -5,6 +5,7 @@ import (
 	"OnlyGo/pkg/config"
 	"OnlyGo/pkg/db"
 	"OnlyGo/pkg/quote"
+	"OnlyGo/pkg/user"
 	"fmt"
 	"log"
 	"net"
@@ -30,7 +31,20 @@ func main() {
 	database, err := db.InitDB()
 	if err != nil {
 		logger.Info("Could not start a DB")
+		logger.Fatal()
 	}
+
+	logger.Info("Start MongoDB")
+	mongoDB, err := db.InitMongoDB()
+	if err != nil {
+		logger.Info("Could not start a MongoDB")
+		logger.Fatal()
+	}
+
+	userRepository := user.NewRepository(mongoDB)
+	userService := user.NewService(userRepository)
+	userHandler := user.NewHandler(userService)
+
 
 	logger.Info("registring a quote repository")
 	quoteRepository := quote.NewRepository(database)
@@ -41,6 +55,7 @@ func main() {
 
 	r := mux.NewRouter()
 	quoteHandler.Register(r)
+	userHandler.Register(r)
 
 	start(r, cfg)
 }
