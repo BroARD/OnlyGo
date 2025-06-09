@@ -2,19 +2,29 @@ version: '3.8'
 services:
   db:
     image: postgres
+    restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
-
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: yourpassword
+    ports:
+      - "27017:27017"
   app:
     build: .
     depends_on:
       - db
+      - mongo
     environment:
       DB_HOST: db
       DATABASE_URL: "postgres://postgres:example@db:5432/mydb?sslmode=disable"
+      MONGO_URL: "mongodb://root:example@mongo:27017/"
     ports:
       - "8080:8080"
